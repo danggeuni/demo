@@ -6,6 +6,13 @@ spring:
     username: root
     password: 1234
 
+    hikari:
+      maximum-pool-size: 3
+      minimum-idle: 1
+      idle-timeout: 60000
+      connection-init-sql: SELECT 1
+
+
   # 실행되는 쿼리 콘솔에 출력
   # 콘솔창에 출력되는 쿼리를 가독성이 좋게 포맷팅
   jpa:
@@ -24,5 +31,5 @@ spring:
     # Entity 설정을 참고하여 Spring Application 실행 시점에 Hibernate에서 자동으로 DDL을 생성한다
     # 필요한 Database의 Table 설정들을 자동으로 수행해준다
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     database-platform: org.hibernate.dialect.MySQL8Dialect

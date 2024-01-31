@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.domain.MemberEntity;
-import com.example.demo.dto.MemberDTO;
-import com.example.demo.service.MemberService;
+import com.example.demo.controller.dto.AddUserRequest;
+import com.example.demo.domain.user.UserEntity;
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
-public class MemberController {
+public class MemberApiController {
 
-    private final MemberService memberService;
+    private final UserService userService;
 
-    @PostMapping("/api/members")
-    public ResponseEntity<MemberEntity> saveMember(@RequestBody MemberDTO memberDTO){
-        MemberEntity member = memberService.save(memberDTO);
+    @PostMapping("/api/users")
+    public ResponseEntity<UserEntity> addUser(@RequestBody AddUserRequest request){
+        UserEntity savedUser = userService.save(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(member);
+                .body(savedUser);
     }
 }
