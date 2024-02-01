@@ -1,11 +1,14 @@
 package com.example.demo.domain.user.repsitory;
 
-
-import com.example.demo.controller.dto.AddUserRequest;
+import com.example.demo.controller.dto.UpdateUserRequest;
 import com.example.demo.domain.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Repository
 public class UserRepository {
@@ -17,20 +20,37 @@ public class UserRepository {
     }
 
 
-    public UserEntity addUser(UserEntity entity){
-
+    public UserEntity addUser(UserEntity entity) {
         int addUser = jdbcTemplate.update("INSERT INTO USER (NAME, ADDRESS, PHONE) VALUES(?, ?, ?)", entity.getName(), entity.getAddress(), entity.getPhone());
-
         return entity;
     }
 
+    public List<UserEntity> findByAll() {
+        return jdbcTemplate.query("SELECT * FROM USER", userEntityRowMapper());
+    }
+
     public UserEntity findById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM USER WHERE ID = ?", new Object[]{id}, (rs, rowNum) -> {
-            long pk = rs.getLong("ID");
-            String name = rs.getString("NAME");
-            String address = rs.getString("ADDRESS");
-            String phone = rs.getString("PHONE");
-            return new UserEntity(pk, name, address, phone);
-        });
+        return jdbcTemplate.queryForObject("SELECT * FROM USER WHERE ID = ?", new Object[]{id}, userEntityRowMapper());
+    }
+
+    public List<UserEntity> findByName(String name) {
+        return jdbcTemplate.query("SELECT * FROM USER WHERE NAME = ?", new Object[]{name}, userEntityRowMapper());
+    }
+
+    public void deleteById(Long id) {
+        jdbcTemplate.update("DELETE FROM USER WHERE ID = ?", id);
+    }
+
+    @Transactional
+    public UserEntity updateById(Long id, UpdateUserRequest request) {
+        jdbcTemplate.update("UPDATE USER SET NAME = ?, ADDRESS = ?, PHONE = ? WHERE ID = ?", request.getName(), request.getAddress(), request.getPhone(), id);
+        return jdbcTemplate.queryForObject("SELECT * FROM USER WHERE ID = ?", new Object[]{id}, userEntityRowMapper());
+    }
+
+    RowMapper<UserEntity> userEntityRowMapper() {
+        return (rs, rowNum) -> {
+            return new UserEntity(rs.getLong("ID"), rs.getString("Name"),
+                    rs.getString("ADDRESS"), rs.getString("PHONE"));
+        };
     }
 }

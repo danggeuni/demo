@@ -13,7 +13,7 @@ public class UserEntity {
     private final String phone;
 
     public UserEntity(Long id, String name, String address, String phone){
-        this.id = null;
+        this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
