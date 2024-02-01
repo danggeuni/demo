@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.dto.AddUserRequest;
-import com.example.demo.controller.dto.UpdateUserRequest;
+import com.example.demo.controller.userdto.AddUserRequest;
+import com.example.demo.controller.userdto.UpdateUserRequest;
 import com.example.demo.domain.user.UserEntity;
 import com.example.demo.domain.user.repsitory.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class UserService {
         return userRepository.addUser(request.toEntity());
     }
 
-    public List<UserEntity> findByAll() {
+    public List<UserEntity> findAll() {
         return userRepository.findByAll();
     }
 
@@ -31,11 +31,11 @@ public class UserService {
         return userRepository.findByName(name);
     }
 
-    public void deleteById(long id){
+    public void deleteById(long id) {
         userRepository.deleteById(id);
     }
 
-    public UserEntity updateById(long id, UpdateUserRequest request){
+    public UserEntity updateById(long id, UpdateUserRequest request) {
         return userRepository.updateById(id, request);
     }
 }

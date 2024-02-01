@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.controller.dto.AddUserRequest;
-import com.example.demo.controller.dto.UpdateUserRequest;
-import com.example.demo.controller.dto.UserResponse;
+import com.example.demo.controller.userdto.AddUserRequest;
+import com.example.demo.controller.userdto.UpdateUserRequest;
+import com.example.demo.controller.userdto.UserResponse;
 import com.example.demo.domain.user.UserEntity;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-public class MemberApiController {
+public class UserApiController {
 
     private final UserService userService;
 
@@ -31,7 +31,7 @@ public class MemberApiController {
 
     @GetMapping("/api/users")
     public ResponseEntity<List<UserResponse>> users(){
-        List<UserResponse> userEntities = userService.findByAll().stream()
+        List<UserResponse> userEntities = userService.findAll().stream()
                 .map(UserResponse::new)
                 .collect(Collectors.toList());
 

@@ -1,4 +1,4 @@
-package com.example.demo.controller.dto;
+package com.example.demo.controller.userdto;
 
 
 import com.example.demo.domain.user.UserEntity;

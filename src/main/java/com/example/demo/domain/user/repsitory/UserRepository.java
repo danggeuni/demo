@@ -1,6 +1,6 @@
 package com.example.demo.domain.user.repsitory;
 
-import com.example.demo.controller.dto.UpdateUserRequest;
+import com.example.demo.controller.userdto.UpdateUserRequest;
 import com.example.demo.domain.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +21,7 @@ public class UserRepository {
 
 
     public UserEntity addUser(UserEntity entity) {
-        int addUser = jdbcTemplate.update("INSERT INTO USER (NAME, ADDRESS, PHONE) VALUES(?, ?, ?)", entity.getName(), entity.getAddress(), entity.getPhone());
+        jdbcTemplate.update("INSERT INTO USER (NAME, ADDRESS, PHONE) VALUES(?, ?, ?)", entity.getName(), entity.getAddress(), entity.getPhone());
         return entity;
     }
 
