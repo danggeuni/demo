@@ -1,4 +1,4 @@
-package com.example.demo.domain.user.repsitory;
+package com.example.demo.domain.user.repository;
 
 import com.example.demo.controller.userdto.UpdateUserRequest;
 import com.example.demo.domain.user.UserEntity;

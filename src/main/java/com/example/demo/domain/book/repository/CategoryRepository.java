@@ -1,7 +1,7 @@
-package com.example.demo.domain.category.repository;
+package com.example.demo.domain.book.repository;
 
 import com.example.demo.controller.categorydto.UpdateCategoryRequest;
-import com.example.demo.domain.category.CategoryEntity;
+import com.example.demo.domain.book.CategoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

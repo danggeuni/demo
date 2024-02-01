@@ -1,6 +1,6 @@
 package com.example.demo.controller.categorydto;
 
-import com.example.demo.domain.category.CategoryEntity;
+import com.example.demo.domain.book.CategoryEntity;
 import lombok.Getter;
 
 @Getter

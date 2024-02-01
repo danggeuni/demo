@@ -4,7 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.controller.categorydto.AddCategoryRequest;
 import com.example.demo.controller.categorydto.CategoryResponse;
 import com.example.demo.controller.categorydto.UpdateCategoryRequest;
-import com.example.demo.domain.category.CategoryEntity;
+import com.example.demo.domain.book.CategoryEntity;
 import com.example.demo.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

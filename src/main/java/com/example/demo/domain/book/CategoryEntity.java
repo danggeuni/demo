@@ -1,4 +1,4 @@
-package com.example.demo.domain.category;
+package com.example.demo.domain.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

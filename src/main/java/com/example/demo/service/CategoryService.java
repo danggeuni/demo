@@ -3,8 +3,8 @@ package com.example.demo.service;
 
 import com.example.demo.controller.categorydto.AddCategoryRequest;
 import com.example.demo.controller.categorydto.UpdateCategoryRequest;
-import com.example.demo.domain.category.CategoryEntity;
-import com.example.demo.domain.category.repository.CategoryRepository;
+import com.example.demo.domain.book.CategoryEntity;
+import com.example.demo.domain.book.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
