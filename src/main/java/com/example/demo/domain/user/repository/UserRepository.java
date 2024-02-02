@@ -19,7 +19,6 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     public UserEntity addUser(UserEntity entity) {
         jdbcTemplate.update("INSERT INTO USER (NAME, ADDRESS, PHONE) VALUES(?, ?, ?)", entity.getName(), entity.getAddress(), entity.getPhone());
         return entity;
@@ -48,9 +47,7 @@ public class UserRepository {
     }
 
     RowMapper<UserEntity> userEntityRowMapper() {
-        return (rs, rowNum) -> {
-            return new UserEntity(rs.getLong("ID"), rs.getString("Name"),
-                    rs.getString("ADDRESS"), rs.getString("PHONE"));
-        };
+        return (rs, rowNum) -> new UserEntity(rs.getLong("ID"), rs.getString("Name"),
+                rs.getString("ADDRESS"), rs.getString("PHONE"));
     }
 }
