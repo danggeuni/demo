@@ -7,13 +7,31 @@ import com.example.demo.domain.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
     private final BookRepository bookRepository;
 
-    public BookEntity save(AddBookRequest request){
+    public BookEntity save(AddBookRequest request) {
         return bookRepository.addBook(request.toEntity());
+    }
+
+    public List<BookEntity> findAll() {
+        return bookRepository.findAll();
+    }
+
+    public BookEntity findById(Long id) {
+        return bookRepository.findById(id);
+    }
+
+    public List<BookEntity> findByName(String name) {
+        return bookRepository.findByName(name);
+    }
+
+    public void deleteById(Long id) {
+        bookRepository.deleteById(id);
     }
 }

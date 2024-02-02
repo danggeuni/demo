@@ -32,7 +32,7 @@ public class BookRepository {
     }
 
     public List<BookEntity> findByName(String name){
-       return jdbcTemplate.query("SELECT * FROM WHERE NAME = ?", new Object[]{name}, bookEntityRowMapper());
+       return jdbcTemplate.query("SELECT * FROM BOOK WHERE NAME = ?", new Object[]{name}, bookEntityRowMapper());
     }
 
     public void deleteById(Long id){
