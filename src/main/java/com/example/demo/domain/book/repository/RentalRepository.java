@@ -1,6 +1,5 @@
 package com.example.demo.domain.book.repository;
 
-import com.example.demo.domain.book.RentalEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
