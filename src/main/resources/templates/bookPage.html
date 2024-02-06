@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Paginated Data</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Author</th>
+        <th>Status</th>
+        <!-- 추가 필드에 대한 헤더를 추가 -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${data}">
+        <td th:text="${item.id}"></td>
+        <td><a th:href="@{/books/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+        <td th:text="${item.category}"></td>
+        <td th:text="${item.author}"></td>
+
+        <td th:if="${item.isRental}">대여중</td>
+        <td th:unless="${item.isRental}">대여 가능</td>
+        <!-- 추가 필드에 대한 데이터를 추가 -->
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <!-- 페이지 링크를 생성하기 위한 코드 -->
+    <span th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{/books(pageSize=${pageSize}, pageNumber=${pageNum})}" th:text="${pageNum}"></a>
+    </span>
+</div>
+
+</body>
+</html>

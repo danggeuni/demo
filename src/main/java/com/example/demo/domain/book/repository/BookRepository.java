@@ -39,6 +39,18 @@ public class BookRepository {
         jdbcTemplate.update("DELETE FROM BOOK WHERE ID = ?", id);
     }
 
+    //    페이징 처리 (pageSize : 개수, pageNumber : 페이지 번호)
+    public List<BookEntity> paging(int pageSize, int pageNumber){
+        int offset = (pageNumber - 1) * pageSize;
+        return jdbcTemplate.query("SELECT * FROM BOOK LIMIT ? OFFSET ?", new Object[]{pageSize, offset}, bookEntityRowMapper());
+    }
+
+    public int totalPage(int pageSize){
+        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM BOOK",Integer.class);
+
+        return (int) Math.ceil((double) count / pageSize);
+    }
+
     RowMapper<BookEntity> bookEntityRowMapper() {
         return (rs, rowNum) -> {
             return new BookEntity(rs.getLong("ID"), rs.getString("NAME"), rs.getString("AUTHOR"),

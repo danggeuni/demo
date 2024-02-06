@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import com.example.demo.controller.bookdto.AddBookRequest;
+import com.example.demo.controller.bookdto.PageResultResponse;
 import com.example.demo.domain.book.BookEntity;
 import com.example.demo.domain.book.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,12 @@ public class BookService {
 
     public void deleteById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    public PageResultResponse<BookEntity> pagingResult(int pageSize, int pageNumber){
+        List<BookEntity> result = bookRepository.paging(pageSize, pageNumber);
+        int totalSize = bookRepository.totalPage(pageSize);
+
+        return new PageResultResponse<>(result, totalSize);
     }
 }
