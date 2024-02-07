@@ -1,7 +1,6 @@
-package com.example.demo.controller.bookdto;
+package com.example.demo.controller.dto;
 
-
-import com.example.demo.domain.book.BookEntity;
+import com.example.demo.domain.BookEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,9 @@ public class AddBookRequest {
 
     private String name;
     private String author;
-    private int categoryCode;
-    private Boolean isRental;
+    private Long category;
 
     public BookEntity toEntity(){
-        return new BookEntity(null, name, author, categoryCode, false);
+        return new BookEntity(null, name, author, category, false);
     }
 }
