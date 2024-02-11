@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
-
-import com.example.demo.controller.dto.PagingResponse;
-import com.example.demo.domain.BookEntity;
+import com.example.demo.controller.dto.book.PagingResponse;
+import com.example.demo.domain.book.BookEntity;
 import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,15 +17,17 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping("/books")
-    public String showBooks(@RequestParam(required = false) String searchQuery, @RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "1") int pageNumber, Model model){
-        PagingResponse<BookEntity> data = bookService.paging(pageSize, pageNumber,searchQuery);
+    @GetMapping("/book")
+    public String paging(@RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "1") int pageNumber,
+                         @RequestParam(required = false) String searchQuery, Model model){
+
+        PagingResponse<BookEntity> responses = bookService.paging(pageSize, pageNumber, searchQuery);
 
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("data",data.getData());
-        model.addAttribute("totalPages", data.getTotalPage());
-        model.addAttribute("searchQuery", data.getSearching());
+        model.addAttribute("searchQuery", searchQuery);
+        model.addAttribute("data", responses.getData());
+        model.addAttribute("totalPage", responses.getTotalPage());
 
         return "bookPage";
     }

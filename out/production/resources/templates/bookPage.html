@@ -1,50 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Paginated Data</title>
+    <meta charset="UTF-8">
+    <title>BooK Page</title>
 </head>
 <body>
 
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Code</th>
-        <th>Author</th>
-        <th>Status</th>
-        <!-- 추가 필드에 대한 헤더를 추가 -->
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${data}">
-        <td th:text="${item.id}"></td>
-        <td><a th:href="@{/books/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
-        <td th:text="${item.category}"></td>
-        <td th:text="${item.author}"></td>
+    <table>
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>NAME</td>
+                <td>AUTHOR</td>
+                <td>CODE</td>
+                <td>STATUS</td>
+            </tr>
+        </thead>
 
-        <td th:if="${item.isRental}">대여중</td>
-        <td th:unless="${item.isRental}">대여 가능</td>
-        <!-- 추가 필드에 대한 데이터를 추가 -->
-    </tr>
-    </tbody>
-</table>
+        <tbody>
+            <tr th:each="item : ${data}">
+                <td th:text="${item.id}"></td>
+                <td>
+                    <a th:href="@{/book/{id}(id = ${item.id})}" th:text="${item.name}"></a>
+                </td>
+                <td th:text="${item.author}"></td>
+                <td th:text="${item.code}"></td>
+                <td th:if="${item.isRental}" th:text="대여중"></td>
+                <td th:unless="${item.isRental}" th:text="'대여 가능'"></td>
+            </tr>
+        </tbody>
+    </table>
 
-<form action="/books" method="get">
-    <label for="searchQuery">검색:</label>
-    <input type="text" id="searchQuery" name="searchQuery">
-    <button type="submit">Search</button>
-</form>
+    <form action="/book" method="get">
+        <label for="searchQuery">검색</label>
+        <input type="text" id="searchQuery" name="searchQuery"/>
+        <button type="submit">검색</button>
+    </form>
 
-
-<div>
-    <!-- 페이지 링크를 생성하기 위한 코드 -->
-    <span th:if="${totalPages != 0}" th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
-        <a th:href="@{/books(pageSize=${pageSize}, pageNumber=${pageNum})}" th:text="${pageNum}"></a>
-    </span>
-    <span th:if="${totalPages == 0}" th:text="1"></span>
-</div>
+    <div>
+        <span th:if="${totalPage > 0}" th:each="pageNum : ${#numbers.sequence(1, totalPage)}">
+            <a th:href="@{/book/(searchQuery=${searchQuery}, pageSize=${pageSize}, pageNumber=${pageNum})}" th:text="${pageNum}"></a>
+        </span>
+        <span th:unless="${totalPage > 0}" th:text="1"></span>
+    </div>
 
 </body>
 </html>

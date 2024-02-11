@@ -1,5 +1,4 @@
-package com.example.demo.controller.dto;
-
+package com.example.demo.controller.dto.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +6,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
 public class PagingResponse<T> {
     private final List<T> data;
-    private final List<T> searching;
     private final int totalPage;
+
+    public PagingResponse(List<T> data, int totalPage){
+        this.data = data;
+        this.totalPage = totalPage;
+    }
 }
