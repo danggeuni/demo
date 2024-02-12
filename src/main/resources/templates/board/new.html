@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/board/new}" method="post" th:object="${item}">
+    <div>
+        <label for="name">작성자</label>
+        <input type="text" id="name" th:field="*{name}">
+    </div>
+    <div>
+        <label for="title">제목</label>
+        <input type="text" id="title" th:field="*{title}">
+    </div>
+    <div>
+        <label for="contents">내용</label>
+        <textarea id="contents" th:field="*{content}"></textarea>
+        <input type="hidden" name="parentId" th:value="${parentId}">
+    </div>
+    <button type="submit">등록</button>
+</form>
+</body>
+</html>

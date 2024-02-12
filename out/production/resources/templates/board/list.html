@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+<h1>게시판</h1>
+<table>
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>작성자</th>
+            <th>제목</th>
+     </tr>
+    </thead>
+
+    <tbody>
+        <tr th:each="board : ${list}">
+            <td th:text="${board.id}"></td>
+            <td th:text="${board.name}"></td>
+            <td th:if="${board.depth} gt 0">
+                <a th:text="${#strings.repeat('&nbsp;&nbsp;', board.depth)} + 'ㄴ ' + ${board.title}" th:href="@{'/board/' + ${board.id}}"></a>
+            </td>
+            <td th:unless="${board.depth} gt 0">
+                <a th:text="${board.title}" th:href="@{'/board/' + ${board.id}}"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <a th:text="글쓰기" th:href="@{/board/new}"></a>
+</body>
+</html>
