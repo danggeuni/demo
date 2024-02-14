@@ -1,30 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>View</title>
 </head>
-
 <body>
 <div>
-    <span>작성자 : </span>
-    <span th:text="${board.name}"></span>
+    <span>작성자</span>
+    <span th:text="${article.name}"></span>
 </div>
 
 <div>
-    <span>제목 : </span>
-    <span th:text="${board.title}"></span>
+    <span>제목</span>
+    <span th:text="${article.title}"></span>
 </div>
 
 <div>
-    <span>내용 : </span>
-    <span th:text="${board.contents}"></span>
+    <span>내용</span>
+    <span th:utext="${article.content}"></span>
 </div>
 
-<div>
-    <a th:href="@{/board}">목록</a>
-    <a th:href="@{/board/{id}/reply(id=${board.id})}">답글</a>
-</div>
+<button th:onclick="|location.href='@{/board}'|" th:text="목록으로"></button>
+
+<button th:onclick="|location.href='@{/board/{id}/reply (id=${id})}'|" th:text="답글달기"></button>
 </body>
 </html>

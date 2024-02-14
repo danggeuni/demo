@@ -2,32 +2,43 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>List</title>
+    <title>Title</title>
 </head>
 <body>
-<h1>게시판</h1>
+<button th:onclick="|location.href='@{/user/join}'|" th:text="회원가입"></button>
+
 <table>
     <thead>
-        <tr>
-            <th>번호</th>
-            <th>작성자</th>
-            <th>제목</th>
-     </tr>
+    <tr>
+        <td>ID</td>
+        <td>작성자</td>
+        <td>제목</td>
+    </tr>
     </thead>
 
     <tbody>
-        <tr th:each="board : ${list}">
-            <td th:text="${board.id}"></td>
-            <td th:text="${board.name}"></td>
-            <td th:if="${board.depth} gt 0">
-                <a th:text="${#strings.repeat('&nbsp;&nbsp;', board.depth)} + 'ㄴ ' + ${board.title}" th:href="@{'/board/' + ${board.id}}"></a>
-            </td>
-            <td th:unless="${board.depth} gt 0">
-                <a th:text="${board.title}" th:href="@{'/board/' + ${board.id}}"></a>
-            </td>
-        </tr>
+    <tr th:each="item : ${list}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:if="${item.depth} gt 0">
+            <a th:href="@{/board/{id} (id = ${item.id})}"
+               th:text="${#strings.repeat('&nbsp;&nbsp;', item.depth) + 'RE: ' + item.title}"></a>
+        </td>
+        <td th:unless="${item.depth} gt 0">
+            <a th:href="@{/board/{id} (id = ${item.id})}" th:text="${item.title}"></a>
+        </td>
+    </tr>
     </tbody>
 </table>
-    <a th:text="글쓰기" th:href="@{/board/new}"></a>
+
+<button th:onclick="|location.href='@{/board/new}'|" th:text="글작성"></button>
+
+<div>
+<span th:if="${totalPages > 0}" th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+    <a th:href="@{/board(pageSize=${pageSize}, pageNumber=${pageNum})}" th:text="${pageNum}"></a>
+</span>
+<span th:unless="${totalPages > 0}" th:text="1"></span>
+</div>
+
 </body>
 </html>

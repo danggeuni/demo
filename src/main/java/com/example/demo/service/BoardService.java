@@ -1,46 +1,62 @@
 package com.example.demo.service;
 
-import com.example.demo.controller.dto.AddBoardRequest;
+import com.example.demo.controller.dto.board.AddArticleRequest;
+import com.example.demo.controller.dto.board.ViewPagesResponse;
 import com.example.demo.domain.BoardEntity;
 import com.example.demo.domain.repository.BoardRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BoardService {
-
     private final BoardRepository boardRepository;
 
-    public BoardEntity insertBoard(AddBoardRequest request, Long parentId) {
+    @Autowired
+    public BoardService(BoardRepository boardRepository){
+        this.boardRepository = boardRepository;
+    }
 
-        System.out.println(request.getName());
-        System.out.println(request.getTitle());
-        System.out.println(request.getContent());
+    public BoardEntity insetArticle(AddArticleRequest request, Long parentId) {
+
+        if(request.getName().isEmpty() || request.getTitle().isEmpty() || request.getContent().isEmpty()){
+            throw new IllegalStateException("빈칸이 존재합니다.");
+        }
 
         if (parentId == null) {
-            return boardRepository.insertBoard(request.toEntity());
+            return boardRepository.insertArticle(request.toEntity());
         } else {
-//            부모 데이터를 가져온 뒤 childData를 생성한다. 부모의 sortKey + 1, depth + 1
-            BoardEntity parentData = boardRepository.getBoard(parentId);
+            BoardEntity parentData = boardRepository.getArticle(parentId);
 
             if(parentData == null){
-                throw new IllegalStateException("해당 글을 찾을 수 없습니다.");
+                throw new IllegalStateException("원글이 존재하지 않습니다.");
             }
 
-            BoardEntity childData = new BoardEntity(null, request.getName(), request.getTitle(), request.getContent(),
-                    parentData.getGroup(), parentData.getSortKey() + 1, parentData.getDepth() + 1, null, null);
-            return boardRepository.insertBoard(childData);
+            return boardRepository.insertArticle(new BoardEntity(
+                    null,
+                    request.getName(),
+                    request.getTitle(),
+                    request.getContent(),
+                    parentData.getGroupId(),
+                    parentData.getSortKey() + 1,
+                    parentData.getDepth() + 1,
+                    LocalDateTime.now(),
+                    null)
+            );
         }
     }
 
-    public BoardEntity getBoard(Long id){
-        return boardRepository.getBoard(id);
+    public BoardEntity getArticle(Long id){
+        return boardRepository.getArticle(id);
     }
 
-    public List<BoardEntity> getBoardList(){
-        return boardRepository.getBoardList();
+    public ViewPagesResponse<BoardEntity> getArticles(int pageSize, int pageNumber){
+        List<BoardEntity> data = boardRepository.getArticles(pageSize, pageNumber);
+        int pages = boardRepository.getPages(pageSize);
+
+        return new ViewPagesResponse<>(data, pages);
     }
 }
+
