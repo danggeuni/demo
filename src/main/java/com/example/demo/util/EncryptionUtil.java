@@ -1,10 +1,9 @@
-package com.example.demo;
+package com.example.demo.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
-public class Encrypt {
+public class EncryptionUtil {
 
     public String salt = "toyProject";
 

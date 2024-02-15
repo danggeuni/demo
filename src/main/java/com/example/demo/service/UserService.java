@@ -1,13 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.Encrypt;
+import com.example.demo.util.EncryptionUtil;
 import com.example.demo.controller.dto.user.LoginUserRequest;
 import com.example.demo.controller.dto.user.RegisterUserRequest;
 import com.example.demo.domain.UserEntity;
 import com.example.demo.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -29,7 +27,7 @@ public class UserService {
             throw new RuntimeException("비밀번호가 서로 다릅니다.");
         }
 
-        Encrypt hashPwd = new Encrypt();
+        EncryptionUtil hashPwd = new EncryptionUtil();
         String changePwd = hashPwd.getEncrypt(request.getPassword(), hashPwd.salt);
         request.setPassword(changePwd);
 
@@ -39,7 +37,7 @@ public class UserService {
     public void loginUser(LoginUserRequest request){
         UserEntity existUser = userRepository.findById(request.getId());
 
-        Encrypt pwd = new Encrypt();
+        EncryptionUtil pwd = new EncryptionUtil();
         String password = pwd.getEncrypt(request.getPassword(), pwd.salt);
 
         if(existUser == null){
