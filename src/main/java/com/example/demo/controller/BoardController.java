@@ -54,7 +54,7 @@ public class BoardController {
         model.addAttribute("id", id);
 
         String loginUser = (String) session.getAttribute("userId");
-        System.out.println(loginUser);
+
         if (loginUser != null) {
             List<ArticlesResponse> list = (List<ArticlesResponse>) session.getAttribute("recentlyView");
             if (list == null) {
