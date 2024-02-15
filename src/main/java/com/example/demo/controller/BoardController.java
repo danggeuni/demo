@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,23 +16,27 @@ import java.util.stream.Collectors;
 public class BoardController {
 
     private final BoardService boardService;
+    private final HttpSession session;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, HttpSession session) {
         this.boardService = boardService;
+        this.session = session;
     }
 
     @GetMapping()
-    public String boardList(Model model, @RequestParam(defaultValue = "5") int pageSize,
+    public String boardList(Model model, @RequestParam(defaultValue = "10") int pageSize,
                             @RequestParam(defaultValue = "1") int pageNumber) {
         List<ArticlesResponse> list = boardService.getArticles(pageSize, pageNumber).getData()
                 .stream().map(ArticlesResponse::new).collect(Collectors.toList());
 
         int totalPages = boardService.getArticles(pageSize, pageNumber).getPages();
+        String userName = (String) session.getAttribute("userId");
 
         model.addAttribute("list", list);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("userName", userName);
 
         return "board/list";
     }
@@ -51,8 +56,11 @@ public class BoardController {
 
     @GetMapping(path = {"/new", "/{parentId}/reply"})
     public String newArticle(Model model, @PathVariable(required = false) Long parentId) {
+        String userName = (String) session.getAttribute("userId");
+
         model.addAttribute("item", new AddArticleRequest());
         model.addAttribute("parentId", parentId);
+        model.addAttribute("userName", userName);
 
         return "board/new";
     }

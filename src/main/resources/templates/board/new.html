@@ -7,9 +7,15 @@
 <body>
 
 <form th:action="@{/board/new}" method="post">
-    <div>
+    <div th:if="${userName == null}">
     <label for="name">작성자 : </label>
     <input id="name" name="name">
+    </div>
+
+    <div th:unless="${userName == null}">
+        <label for="name">작성자 : </label>
+        <span th:text="${userName}"></span>
+        <input type="hidden" th:value="${userName}" name="name">
     </div>
 
     <div>

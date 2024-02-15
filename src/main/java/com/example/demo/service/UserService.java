@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.Encrypt;
+import com.example.demo.controller.dto.user.LoginUserRequest;
 import com.example.demo.controller.dto.user.RegisterUserRequest;
 import com.example.demo.domain.UserEntity;
 import com.example.demo.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -19,7 +22,7 @@ public class UserService {
         UserEntity checkId = userRepository.findById(request.getId());
 
         if (checkId != null) {
-            throw new RuntimeException("이미 존재하는 회원 입니다.");
+            throw new RuntimeException("이미 등록된 아이디 입니다.");
         }
 
         if (!request.getPassword().equals(confirmPwd)) {
@@ -31,5 +34,20 @@ public class UserService {
         request.setPassword(changePwd);
 
         return userRepository.insertUser(request.toEntity());
+    }
+
+    public void loginUser(LoginUserRequest request){
+        UserEntity existUser = userRepository.findById(request.getId());
+
+        Encrypt pwd = new Encrypt();
+        String password = pwd.getEncrypt(request.getPassword(), pwd.salt);
+
+        if(existUser == null){
+            throw new RuntimeException("존재하지 않는 회원입니다.");
+        }
+
+        if(!existUser.getPassword().equals(password)){
+            throw new RuntimeException("비밀번호가 틀립니다.");
+        }
     }
 }
