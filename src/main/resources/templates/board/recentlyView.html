@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<span th:text="${loginUser} + '님, 반갑습니다.'"></span>
+<button th:onclick="|location.href='@{/user/logout}'|" th:text="로그아웃"></button>
+
+<table th:if="${list != null}">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>작성자</td>
+        <td>제목</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="item : ${list}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.name}"></td>
+        <td th:if="${item.depth} gt 0">
+            <a th:href="@{/board/{id} (id = ${item.id})}"
+               th:text="${#strings.repeat('&nbsp;&nbsp;', item.depth) + 'RE: ' + item.title}"></a>
+        </td>
+        <td th:unless="${item.depth} gt 0">
+            <a th:href="@{/board/{id} (id = ${item.id})}" th:text="${item.title}"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table th:unless="${list != null}">
+    <tr>
+        <td>최근 본 목록이 없습니다.</td>
+    </tr>
+</table>
+
+<button th:onclick="|location.href='@{/board}'|" th:text="돌아가기"></button>
+
+</body>
+</html>

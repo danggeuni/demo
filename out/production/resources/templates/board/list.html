@@ -39,7 +39,15 @@
     </tbody>
 </table>
 
-<button th:onclick="|location.href='@{/board/new}'|" th:text="글작성"></button>
+<div th:if="${userName != null}">
+    <button th:onclick="|location.href='@{/board/new}'|" th:text="글작성"></button>
+    <button th:onclick="|location.href='@{/board/recent-view}'|" th:text="'최근 본 목록'"></button>
+</div>
+
+<div th:unless="${userName != null}">
+    <button th:onclick="|location.href='@{/board/new}'|" th:text="글작성"></button>
+</div>
+
 
 <div>
 <span th:if="${totalPages > 0}" th:each="pageNum : ${#numbers.sequence(1, totalPages)}">

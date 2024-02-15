@@ -2,12 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.controller.dto.board.AddArticleRequest;
 import com.example.demo.controller.dto.board.ArticlesResponse;
+import com.example.demo.domain.BoardEntity;
 import com.example.demo.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,33 @@ public class BoardController {
         model.addAttribute("article", article);
         model.addAttribute("id", id);
 
+        String loginUser = (String) session.getAttribute("userId");
+        System.out.println(loginUser);
+        if (loginUser != null) {
+            List<ArticlesResponse> list = (List<ArticlesResponse>) session.getAttribute("recentlyView");
+            if (list == null) {
+                list = new ArrayList<>();
+            }
+//        본 목록 추가
+            list.add(article);
+
+//        세션에 저장
+            session.setAttribute("recentlyView", list);
+            System.out.println(session.getAttribute("recentlyView"));
+        }
+
         return "board/view";
+    }
+
+    @GetMapping("/recent-view")
+    public String recentlyView(Model model){
+        List<ArticlesResponse> list = (List<ArticlesResponse>) session.getAttribute("recentlyView");
+        String loginUser = (String) session.getAttribute("userId");
+
+        model.addAttribute("list", list);
+        model.addAttribute("loginUser", loginUser);
+
+        return "board/recentlyView";
     }
 
     @GetMapping(path = {"/new", "/{parentId}/reply"})
