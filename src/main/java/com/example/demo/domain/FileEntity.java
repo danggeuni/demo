@@ -10,4 +10,5 @@ public class FileEntity {
     private final String path;
     private final String originName;
     private final String downName;
+    private final Long boardId;
 }

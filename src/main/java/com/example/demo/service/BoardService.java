@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.controller.dto.board.AddArticleRequest;
+import com.example.demo.controller.dto.board.FileResponse;
 import com.example.demo.controller.dto.board.ViewPagesResponse;
 import com.example.demo.domain.BoardEntity;
+import com.example.demo.domain.FileEntity;
 import com.example.demo.domain.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,8 +61,12 @@ public class BoardService {
         return new ViewPagesResponse<>(data, pages);
     }
 
-    public void uploadFile(String path, String originFileName, String downFileName, Long parentId){
-        boardRepository.uploadFile(path, originFileName, downFileName, parentId);
+    public void uploadFile(String path, String originFileName, String downFileName, Long id){
+        boardRepository.uploadFile(path, originFileName, downFileName, id);
+    }
+
+    public FileEntity findFileById(Long parentId){
+        return boardRepository.findFileById(parentId);
     }
 }
 

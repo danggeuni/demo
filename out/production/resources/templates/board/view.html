@@ -20,6 +20,11 @@
     <span th:utext="${article.content}"></span>
 </div>
 
+<div th:if="${attach.downName == null}"></div>
+<div th:unless="${attach.downName == null}">
+    <a th:href="@{'/board/download/' + ${attach.downName}}" th:text="${attach.originName}"></a>
+</div>
+
 <button th:onclick="|location.href='@{/board}'|" th:text="목록으로"></button>
 
 <button th:onclick="|location.href='@{/board/{id}/reply (id=${id})}'|" th:text="답글달기"></button>

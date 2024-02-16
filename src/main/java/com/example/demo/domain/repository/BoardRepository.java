@@ -1,6 +1,8 @@
 package com.example.demo.domain.repository;
 
+import com.example.demo.controller.dto.board.FileResponse;
 import com.example.demo.domain.BoardEntity;
+import com.example.demo.domain.FileEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -36,6 +38,9 @@ public class BoardRepository {
     }
 
     public BoardEntity getArticle(Long id) {
+        if(id == null){
+            return jdbcTemplate.queryForObject("SELECT * FROM BOARD WHERE ID = LAST_INSERT_ID()", boardEntityRowMapper());
+        }
         return jdbcTemplate.queryForObject("SELECT * FROM BOARD WHERE ID = ?", new Object[]{id}, boardEntityRowMapper());
     }
 
@@ -49,9 +54,16 @@ public class BoardRepository {
         return (int) Math.ceil((double) count / pageSize);
     }
 
-    public void uploadFile(String path, String originFileName, String downFileName, Long parentId){
+    public void uploadFile(String path, String originFileName, String downFileName, Long id){
         jdbcTemplate.update("INSERT INTO FILE (PATH, ORIGIN_NAME, DOWN_NAME, BOARD_ID) VALUES (?, ?, ?, ?)",
-                path, originFileName, downFileName, parentId);
+                path, originFileName, downFileName, id);
+    }
+
+    public FileEntity findFileById(Long id){
+        FileEntity entity = jdbcTemplate.queryForObject("SELECT * FROM BOARD LEFT OUTER JOIN FILE ON BOARD.ID = FILE.BOARD_ID WHERE BOARD.ID = ?",
+                new Object[]{id}, fileEntityRowMapper());
+
+        return entity;
     }
 
     RowMapper<BoardEntity> boardEntityRowMapper() {
@@ -65,6 +77,16 @@ public class BoardRepository {
                 rs.getInt("DEPTH"),
                 rs.getTimestamp("WRITE_DATE").toLocalDateTime(),
                 rs.getTimestamp("UPDATE_DATE").toLocalDateTime()
+        ));
+    }
+
+    RowMapper<FileEntity> fileEntityRowMapper(){
+        return ((rs, rowNum) -> new FileEntity(
+                rs.getLong("ID"),
+                rs.getString("PATH"),
+                rs.getString("ORIGIN_NAME"),
+                rs.getString("DOWN_NAME"),
+                rs.getLong("BOARD_ID")
         ));
     }
 }
