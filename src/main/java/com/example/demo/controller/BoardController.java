@@ -7,10 +7,14 @@ import com.example.demo.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -60,10 +64,9 @@ public class BoardController {
             if (list == null) {
                 list = new ArrayList<>();
             }
-//        본 목록 추가
+
             list.add(article);
 
-//        세션에 저장
             session.setAttribute("recentlyView", list);
             System.out.println(session.getAttribute("recentlyView"));
         }
@@ -72,7 +75,7 @@ public class BoardController {
     }
 
     @GetMapping("/recent-view")
-    public String recentlyView(Model model){
+    public String recentlyView(Model model) {
         List<ArticlesResponse> list = (List<ArticlesResponse>) session.getAttribute("recentlyView");
         String loginUser = (String) session.getAttribute("userId");
 
@@ -94,7 +97,30 @@ public class BoardController {
     }
 
     @PostMapping("/new")
-    public String insertArticle(@ModelAttribute AddArticleRequest request, Long parentId) {
+    public String insertArticle(@ModelAttribute AddArticleRequest request, Long parentId, @RequestParam("file") MultipartFile file) {
+
+        try {
+            String uploadDir = "C:/Temp";
+            File uploadPath = new File(uploadDir);
+            String path = uploadPath.toString();
+
+            if (!uploadPath.exists()) {
+                uploadPath.mkdirs();
+            }
+
+            String originFileName = file.getOriginalFilename();
+            String downFileName = UUID.randomUUID() + "_" + originFileName;
+            String filePath = uploadPath + "/" + downFileName;
+
+            File dest = new File(filePath);
+            file.transferTo(dest);
+
+            boardService.uploadFile(path, originFileName, downFileName, parentId);
+
+        } catch (IOException e) {
+            throw new RuntimeException("파일 첨부 실패함요");
+        }
+
         boardService.insetArticle(request, parentId);
         return "redirect:/board";
     }

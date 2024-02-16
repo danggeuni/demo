@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:action="@{/board/new}" method="post">
+<form th:action="@{/board/new}" method="post" enctype="multipart/form-data">
     <div th:if="${userName == null}">
     <label for="name">작성자 : </label>
     <input id="name" name="name">
@@ -16,6 +16,11 @@
         <label for="name">작성자 : </label>
         <span th:text="${userName}"></span>
         <input type="hidden" th:value="${userName}" name="name">
+    </div>
+
+    <div>
+        <label for="attach">첨부파일 : </label>
+        <input id="attach" name="file" type="file">
     </div>
 
     <div>
@@ -31,7 +36,7 @@
     <input type="hidden" name="parentId" th:value="${parentId}">
 
     <button type="submit" th:text="완료"></button>
-    <button th:onclick="|location.href='@{/board}'|" th:text="취소"></button>
+    <button type="button" th:onclick="|location.href='@{/board}'|" th:text="취소"></button>
 </form>
 
 </body>

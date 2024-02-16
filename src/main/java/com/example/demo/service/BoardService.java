@@ -58,5 +58,9 @@ public class BoardService {
 
         return new ViewPagesResponse<>(data, pages);
     }
+
+    public void uploadFile(String path, String originFileName, String downFileName, Long parentId){
+        boardRepository.uploadFile(path, originFileName, downFileName, parentId);
+    }
 }
 

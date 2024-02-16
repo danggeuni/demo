@@ -49,6 +49,10 @@ public class BoardRepository {
         return (int) Math.ceil((double) count / pageSize);
     }
 
+    public void uploadFile(String path, String originFileName, String downFileName, Long parentId){
+        jdbcTemplate.update("INSERT INTO FILE (PATH, ORIGIN_NAME, DOWN_NAME, BOARD_ID) VALUES (?, ?, ?, ?)",
+                path, originFileName, downFileName, parentId);
+    }
 
     RowMapper<BoardEntity> boardEntityRowMapper() {
         return ((rs, rowNum) -> new BoardEntity(
