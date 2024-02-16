@@ -112,6 +112,8 @@ public class BoardController {
         boardService.insetArticle(request, parentId);
 
         if (!file.isEmpty()) {
+            BoardEntity lastEntity;
+
             try {
                 String uploadDir = "C:/Temp";
                 File uploadPath = new File(uploadDir);
@@ -127,7 +129,9 @@ public class BoardController {
 
                 File dest = new File(filePath);
                 file.transferTo(dest);
-                BoardEntity lastEntity = boardService.getArticle(parentId);
+
+                lastEntity = boardService.getLastArticle(parentId);
+
                 boardService.uploadFile(path, originFileName, downFileName, lastEntity.getId());
             } catch (IOException e) {
                 throw new RuntimeException("파일 첨부 실패함요");

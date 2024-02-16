@@ -38,10 +38,11 @@ public class BoardRepository {
     }
 
     public BoardEntity getArticle(Long id) {
-        if(id == null){
-            return jdbcTemplate.queryForObject("SELECT * FROM BOARD WHERE ID = LAST_INSERT_ID()", boardEntityRowMapper());
-        }
         return jdbcTemplate.queryForObject("SELECT * FROM BOARD WHERE ID = ?", new Object[]{id}, boardEntityRowMapper());
+    }
+
+    public BoardEntity getLastArticle(Long id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM BOARD WHERE ID = LAST_INSERT_ID()", boardEntityRowMapper());
     }
 
     public List<BoardEntity> getArticles(int pageSize, int pageNumber) {
@@ -49,17 +50,17 @@ public class BoardRepository {
         return jdbcTemplate.query("SELECT * FROM BOARD ORDER BY GROUP_ID DESC, SORT_KEY LIMIT ? OFFSET ?", new Object[]{pageSize, offset}, boardEntityRowMapper());
     }
 
-    public int getPages(int pageSize){
+    public int getPages(int pageSize) {
         int count = jdbcTemplate.queryForObject("SELECT COUNT(ID) FROM BOARD", Integer.class);
         return (int) Math.ceil((double) count / pageSize);
     }
 
-    public void uploadFile(String path, String originFileName, String downFileName, Long id){
+    public void uploadFile(String path, String originFileName, String downFileName, Long id) {
         jdbcTemplate.update("INSERT INTO FILE (PATH, ORIGIN_NAME, DOWN_NAME, BOARD_ID) VALUES (?, ?, ?, ?)",
                 path, originFileName, downFileName, id);
     }
 
-    public FileEntity findFileById(Long id){
+    public FileEntity findFileById(Long id) {
         FileEntity entity = jdbcTemplate.queryForObject("SELECT * FROM BOARD LEFT OUTER JOIN FILE ON BOARD.ID = FILE.BOARD_ID WHERE BOARD.ID = ?",
                 new Object[]{id}, fileEntityRowMapper());
 
@@ -80,7 +81,7 @@ public class BoardRepository {
         ));
     }
 
-    RowMapper<FileEntity> fileEntityRowMapper(){
+    RowMapper<FileEntity> fileEntityRowMapper() {
         return ((rs, rowNum) -> new FileEntity(
                 rs.getLong("ID"),
                 rs.getString("PATH"),

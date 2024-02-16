@@ -65,6 +65,10 @@ public class BoardService {
         boardRepository.uploadFile(path, originFileName, downFileName, id);
     }
 
+    public BoardEntity getLastArticle(Long id){
+        return boardRepository.getLastArticle(id);
+    }
+
     public FileEntity findFileById(Long parentId){
         return boardRepository.findFileById(parentId);
     }
