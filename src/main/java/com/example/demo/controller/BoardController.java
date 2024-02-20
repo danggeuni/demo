@@ -12,10 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -57,10 +54,7 @@ public class BoardController {
 
         // 줄바꿈
         String changeString = article.getContent().replace("\n", "<br>");
-
         article.setContent(changeString);
-        model.addAttribute("article", article);
-        model.addAttribute("id", id);
 
         // 뷰 목록 리스트에 추가
         String loginUser = (String) session.getAttribute("userId");
@@ -80,6 +74,9 @@ public class BoardController {
         if (!(attach == null)) {
             model.addAttribute("attach", attach);
         }
+
+        model.addAttribute("article", article);
+        model.addAttribute("id", id);
 
         return "board/view";
     }
@@ -147,9 +144,9 @@ public class BoardController {
             String filePath = "C:/Temp/" + downName;
             FileInputStream inputStream = new FileInputStream(filePath);
 
-            response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=" + downName);
-            response.setHeader("Content-Length", String.valueOf(new File(filePath).length()));
+//            response.setContentType("application/octet-stream");
+//            response.setHeader("Content-Disposition", "attachment; filename=" + downName);
+//            response.setHeader("Content-Length", String.valueOf(new File(filePath).length()));
 
             OutputStream outputStream = response.getOutputStream();
 

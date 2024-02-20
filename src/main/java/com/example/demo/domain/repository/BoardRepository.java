@@ -61,10 +61,8 @@ public class BoardRepository {
     }
 
     public FileEntity findFileById(Long id) {
-        FileEntity entity = jdbcTemplate.queryForObject("SELECT * FROM BOARD LEFT OUTER JOIN FILE ON BOARD.ID = FILE.BOARD_ID WHERE BOARD.ID = ?",
+       return jdbcTemplate.queryForObject("SELECT * FROM BOARD LEFT OUTER JOIN FILE ON BOARD.ID = FILE.BOARD_ID WHERE BOARD.ID = ?",
                 new Object[]{id}, fileEntityRowMapper());
-
-        return entity;
     }
 
     RowMapper<BoardEntity> boardEntityRowMapper() {
